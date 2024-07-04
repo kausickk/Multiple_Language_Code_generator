@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask a Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-left: 4px solid #007BFF;
+        }
+        #response strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #007BFF;
+        }
+        #response p {
+            margin: 0;
+            color: #333;
+        }
+        .spinner {
+            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #007BFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #spinner-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ask a Question</h1>
+        <form id="question-form">
+            <div class="form-group">
+                <label for="question">Your Question:</label>
+                <textarea id="question" name="question" rows="4"></textarea>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="response" style="display: none;">
+            <strong>Response:</strong>
+            <p id="response-content"></p>
+        </div>
+        <div id="spinner-container">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('question-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const responseDiv = document.getElementById('response');
+            const responseContent = document.getElementById('response-content');
+            const spinnerContainer = document.getElementById('spinner-container');
+
+            responseDiv.style.display = 'none'; // Hide response div initially
+            spinnerContainer.style.display = 'block'; // Show spinner
+
+            const response = await fetch('/ask', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            responseContent.innerHTML = result.answer.replace(/\n/g, '<br>'); // Convert newlines to <br> tags
+            responseDiv.style.display = 'block'; // Show response div
+            spinnerContainer.style.display = 'none'; // Hide spinner
+        });
+    </script>
+</body>
+</html>

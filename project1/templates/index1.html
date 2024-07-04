@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Prompt Generator</h1>
+        <form action="/generate" method="post">
+            <label for="prompt">Enter your prompt:</label><br>
+            <input type="text" id="prompt" name="prompt" required><br><br>
+            <input type="submit" value="Generate">
+        </form>
+
+        {% if response %}
+            <h2>Responses:</h2>
+            <div class="response">
+                {% if response.javascript %}
+                    <div class="language">
+                        <h3>JavaScript</h3>
+                        <pre><code>{{ response.javascript }}</code></pre>
+                    </div>
+                {% endif %}
+                {% if response.python %}
+                    <div class="language">
+                        <h3>Python</h3>
+                        <pre><code>{{ response.python }}</code></pre>
+                    </div>
+                {% endif %}
+                {% if response.java %}
+                    <div class="language">
+                        <h3>Java</h3>
+                        <pre><code>{{ response.java }}</code></pre>
+                    </div>
+                {% endif %}
+                {% if response.cpp %}
+                    <div class="language">
+                        <h3>C++</h3>
+                        <pre><code>{{ response.cpp }}</code></pre>
+                    </div>
+                {% endif %}
+                {% if response.csharp %}
+                    <div class="language">
+                        <h3>C#</h3>
+                        <pre><code>{{ response.csharp }}</code></pre>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
